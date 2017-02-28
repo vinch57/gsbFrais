@@ -7,6 +7,7 @@
     <meta name="author" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="./css/style.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src ="./ajax/js/_ajax.lib.js"></script>
 </head>
 <body>
     <div class="container">
@@ -23,6 +24,8 @@
                             <li <?php if (!isset($_REQUEST['uc']) || $_REQUEST['uc'] == 'accueil') { ?> class="active"<?php } ?>><a href="index.php">Accueil</a></li>
                             <li <?php if (isset($_REQUEST['uc']) && $_REQUEST['uc'] == 'gererFrais') { ?> class="active"<?php } ?>><a href="index.php?uc=gererFrais&action=saisirFrais">Saisie fiche de frais</a></li>
                             <li <?php if (isset($_REQUEST['uc']) && $_REQUEST['uc'] == 'etatFrais') { ?> class="active"<?php } ?>><a href="index.php?uc=etatFrais&action=selectionnerMois">Mes fiches de frais</a></li>
+                            <li <?php if (isset($_REQUEST['uc']) && $_REQUEST['uc'] == 'statAnnee') { ?> class="active"<?php } ?>><a href="index.php?uc=statAnnee&action=selectionnerAnnee">Statistiques annuelles</a></li>
+                            <li <?php if (isset($_REQUEST['uc']) && $_REQUEST['uc'] == 'statGlobal') { ?> class="active"<?php } ?>><a href="index.php?uc=statGlobal&action=voirTotalFrais">Total des frais</a></li>
                             <li <?php if (isset($_REQUEST['uc']) && $_REQUEST['uc'] == 'deconnexion') { ?> class="active"<?php } ?>><a href="index.php?uc=deconnexion&action=demandeDeconnexion">Déconnexion</a></li>
                         </ul>
                     </div>
@@ -35,3 +38,4 @@
         <?php
         }
         ?>
+<script type="text/javascript" src="./ajax/js/jquery-1.11.3.min.js"></script>

@@ -1,5 +1,5 @@
 <div class="row">    
-    <h2>Renseigner ma fiche de frais du mois <?php echo $numMois . "-" . $numAnnee ?></h2>
+    <h2>Renseigner ma fiche de frais du mois <?php echo $numMois . "-" . $numAnnee ?><small> - Visiteur : <?php echo $_SESSION['prenom'] . " " . $_SESSION['nom'] ?></small></h2>
     <h3>Eléments forfaitisés</h3>
     <div class="col-md-4">
         <form method="post" action="index.php?uc=gererFrais&action=validerMajFraisForfait" role="form">
@@ -9,9 +9,10 @@
                     $idFrais = $unFrais['idfrais'];
                     $libelle = htmlspecialchars($unFrais['libelle']);
                     $quantite = $unFrais['quantite'];
+                    $montant = $unFrais['montant'];
                     ?>
                     <div class="form-group">
-                        <label for="idFrais2"><?php echo $libelle ?></label>
+                        <label for="idFrais2"><?php echo $libelle ?> (<?php echo $montant ?>€)</label>
                         <input type="text" id="idFrais" name="lesFrais[<?php echo $idFrais ?>]" size="10" maxlength="5" value="<?php echo $quantite ?>" class="form-control">
                     </div>
                     <?php

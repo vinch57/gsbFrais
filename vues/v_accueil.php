@@ -13,6 +13,8 @@
                     <div class="col-xs-12 col-md-12">
                         <a href="index.php?uc=gererFrais&action=saisirFrais" class="btn btn-success btn-lg" role="button"><span class="glyphicon glyphicon-plus-sign"></span> <br/>Saisir fiche de frais</a>
                         <a href="index.php?uc=etatFrais&action=selectionnerMois" class="btn btn-primary btn-lg" role="button"><span class="glyphicon glyphicon-list-alt"></span> <br/>Mes fiches de frais</a>
+                        <a href="index.php?uc=statAnnee&action=selectionnerAnnee" class="btn btn-danger btn-lg" role="button"><span class="glyphicon glyphicon-stats"></span> <br/>Statistiques annuelles</a>
+                        <a href="index.php?uc=statGlobal&action=voirTotalFrais" class="btn btn-warning btn-lg" role="button"><span class="glyphicon glyphicon-folder-close"></span> <br/>Total des frais</a>
                     </div>
                 </div>
             </div>

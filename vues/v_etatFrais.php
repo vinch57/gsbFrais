@@ -3,7 +3,7 @@
     <div class="panel-heading">Fiche de frais du mois <?php echo $numMois . "-" . $numAnnee ?> : </div>
     <div class="panel-body">
         <strong><u>Etat :</u></strong> <?php echo $libEtat ?> depuis le <?php echo $dateModif ?> <br> 
-        <strong><u>Montant validé :</u></strong> <?php echo $montantValide ?>
+        <strong><u>Montant validé :</u></strong> <?php echo number_format($montantValide,2,',','.') ?>
     </div>
 </div>
 <div class="panel panel-info"">
@@ -32,11 +32,25 @@
     </table>
 </div>
 <div class="panel panel-info">
-    <div class="panel-heading">Descriptif des éléments hors forfait - <?php echo $nbJustificatifs ?> justificatifs reçus</div>
+    <div class="panel-heading">Descriptif des éléments hors forfait - 
+        <?php
+            if($nbJustificatifs > 1)
+                {
+                    echo $nbJustificatifs.' justificatifs reçus</div>';
+                }
+            if($nbJustificatifs == 0) 
+                {
+                    echo 'Aucun justificatif reçu</div>';
+                }
+            if($nbJustificatifs == 1)
+                {
+                    echo $nbJustificatifs.' justificatif reçu</div>';
+                }
+        ?>
     <table class="table table-bordered table-responsive">
         <tr>
             <th class="date">Date</th>
-            <th class="libelle">Libelle</th>
+            <th class="libelle">Libellé</th>
             <th class='montant'>Montant</th>                
         </tr>
         <?php
@@ -48,7 +62,7 @@
             <tr>
                 <td><?php echo $date ?></td>
                 <td><?php echo $libelle ?></td>
-                <td><?php echo $montant ?></td>
+                <td><?php echo number_format($montant,2,',','.') ?></td>
             </tr>
             <?php
         }
