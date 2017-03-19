@@ -4,7 +4,7 @@ $action = $_REQUEST['action'];
 $idVisiteur = $_SESSION['idVisiteur'];
 switch ($action) {
     case 'selectionnerAnnee': {
-        $lesAnnees = $pdo->getLesAnneesDisponibles($idVisiteur);
+        $lesAnnees = getAPI('lesanneesdisponibles/'.$idVisiteur);
         // Afin de sélectionner par défaut la dernière année dans la zone de liste
         // on demande toutes les clés, et on prend la première,
         // les années étant triées de manière décroissante

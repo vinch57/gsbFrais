@@ -54,17 +54,21 @@
             <th class='montant'>Montant</th>                
         </tr>
         <?php
-        foreach ($lesFraisHorsForfait as $unFraisHorsForfait) {
-            $date = $unFraisHorsForfait['date'];
-            $libelle = htmlspecialchars($unFraisHorsForfait['libelle']);
-            $montant = $unFraisHorsForfait['montant'];
-            ?>
-            <tr>
-                <td><?php echo $date ?></td>
-                <td><?php echo $libelle ?></td>
-                <td><?php echo number_format($montant,2,',','.') ?></td>
-            </tr>
-            <?php
+        if($lesFraisHorsForfait) {
+            foreach ($lesFraisHorsForfait as $unFraisHorsForfait) {
+                $date = $unFraisHorsForfait['date'];
+                $libelle = htmlspecialchars($unFraisHorsForfait['libelle']);
+                $montant = $unFraisHorsForfait['montant'];
+                ?>
+                <tr>
+                    <td><?php echo $date ?></td>
+                    <td><?php echo $libelle ?></td>
+                    <td><?php echo number_format($montant,2,',','.') ?></td>
+                </tr>
+                <?php
+            }
+        } else {
+            echo '<tr><td>Pas d\'éléments hors forfait pour ce mois</td></tr>';
         }
         ?>
     </table>

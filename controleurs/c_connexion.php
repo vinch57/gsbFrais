@@ -17,11 +17,20 @@ switch ($action) {
                 include("vues/v_erreurs.php");
                 include("vues/v_connexion.php");
             } else {
-                $id = $visiteur['id'];
-                $nom = $visiteur['nom'];
-                $prenom = $visiteur['prenom'];
-                connecter($id, $nom, $prenom);
-                header('Location: index.php');
+                $authentification = authAPI($login, $mdp);
+                if ($authentification -> code == 200){
+                    $id = $visiteur['id'];
+                    $nom = $visiteur['nom'];
+                    $prenom = $visiteur['prenom'];
+                    $token = $authentification->token;
+                    connecter($id, $nom, $prenom, $token);
+                    header('Location: index.php');
+                }
+                else {
+                    ajouterErreur($authentification -> message);
+                    include("vues/v_erreurs.php");
+                    include("vues/v_connexion.php");
+                }
             }
             break;
         }

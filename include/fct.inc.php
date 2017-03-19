@@ -1,4 +1,7 @@
 <?php
+
+include("config.inc.php");
+
 /**
  * Fonctions pour l'application GSB
  * @package default
@@ -19,10 +22,12 @@ function estConnecte() {
  * @param $nom
  * @param $prenom
  */
-function connecter($id, $nom, $prenom) {
+function connecter($id, $nom, $prenom, $token) {
     $_SESSION['idVisiteur'] = $id;
     $_SESSION['nom'] = $nom;
     $_SESSION['prenom'] = $prenom;
+    $_SESSION['token'] = $token;
+    
 }
 /**
  * Détruit la session active
@@ -188,4 +193,155 @@ function nbErreurs() {
         return count($_REQUEST['erreurs']);
     }
 }
+
+
+
+/**
+* initialise un client URL
+* @author
+* @return le client URL
+*/
+function initCurl($complementURL) {
+    // construire l'URL
+    $url = API_URL.$complementURL;
+    // initialiser la session http
+    $unCurl = curl_init($url);
+    // Préciser que la réponse est souhaitée
+    curl_setopt($unCurl, CURLOPT_RETURNTRANSFER, true);
+    // retourner le client HTTP
+    return $unCurl;
+}
+/**
+* consommer le service d'authentification
+* @author
+* @return le code HTTP et le jeton (ou un message d'erreur)
+*/
+function authAPI($login, $mdp) {
+    // initialiser le client URL
+    $unCurl = initCurl(LOGIN);
+    // Préciser le Content-Type
+    curl_setopt($unCurl,CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
+    // Préciser le type de requête HTTP : POST
+    curl_setopt($unCurl, CURLOPT_POST, true);
+    // créer le tableau des données à envoyer par POST
+    $champsPost = array(
+        '_username' => $login,
+        '_password' => $mdp
+    );
+    // Créer la chaine url encodée selon la RFC1738 à partir du tableau de paramètres séparés par le caractère &
+    $trame = http_build_query($champsPost, '', '&');
+    // Ajouter les paramètres
+    curl_setopt($unCurl, CURLOPT_POSTFIELDS, $trame);
+    // Envoyer la requête
+    $reponse = curl_exec($unCurl);
+    // convertir la chaîne encodée JSON en une variable PHP
+    $retour = json_decode($reponse, false);
+    // récupérer le status
+    $resultStatus = curl_getinfo($unCurl);
+    // vérifier si le jeton a été obtenu
+    if ($resultStatus['http_code'] == 200) {
+    // dans ce cas le retour est un objet qui expose la propriété token
+    $laReponse = (object)array (
+        'code' => $resultStatus['http_code'],
+        'token' => $retour->token );
+    } else {
+    // dans ce cas le retour est un objet qui expose les propriétés code et message
+    $laReponse = $retour;
+    }
+    // fermer la session
+    curl_close($unCurl);
+    // retourner la réponse
+    return $laReponse;
+}
+
+
+/**
+* méthode GET - API Rest Frais
+* @author
+* @return la réponse
+*/
+function getAPI($complement_url) {
+    // initialiser le client URL
+    $unCurl = initCurl($complement_url);
+    // Définir l'entête avec le jeton d'authentification
+    $header = array();
+    $header[] = 'Authorization: Bearer '.$_SESSION['token'];
+    curl_setopt($unCurl, CURLOPT_HTTPHEADER, $header);
+    // Envoyer la requête
+    $reponse = curl_exec($unCurl);
+    // récupérer le status, ici juste le code HTTP
+    $httpCode = curl_getinfo($unCurl, CURLINFO_HTTP_CODE);
+    // vérifier si il y a une réponse
+    if ($httpCode == 404) {
+        // false indiquera qu'il n'y a pas de ligne retournée
+        $laReponse = false;
+    }
+    else {
+        // convertir la chaîne encodée JSON en une variable PHP
+
+        //On nettoie la chaîne JSON sinon le decodage génèrera une erreur.
+        for ($i = 0; $i <= 31; ++$i) {
+            $reponse = str_replace(chr($i), "", $reponse);
+        }
+        $reponse = str_replace(chr(127), "", $reponse);
+
+        if (0 === strpos(bin2hex($reponse), 'efbbbf')) {
+           $reponse = substr($reponse, 3);
+        }
+        
+        $laReponse = json_decode($reponse, true);
+    }
+    // fermer la session
+    curl_close($unCurl);
+    // retourner la réponse
+    return $laReponse;
+}
+
+
+
+function actionAPI($fct, $action, $data) {
+    $unCurl = initCurl($fct);
+    $header = array();
+    $header[] = 'Authorization: Bearer ' . $_SESSION['token'];
+    array_push($header, 'Content-Type: application/x-www-form-urlencoded');
+    curl_setopt($unCurl, CURLOPT_HTTPHEADER, $header);
+
+    curl_setopt($unCurl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($unCurl, CURLOPT_POST, true);
+
+    $param = "";
+    $value = "";
+
+    switch ($action) {
+        case 'POST' :
+            $param = "POST";
+            $value = 201;
+            break;
+        case 'PUT' :
+            $param = "PUT";
+            $value = 201;
+            break;
+        case 'DELETE' :
+            $param = "DELETE";
+            $value = 200;
+    }
+
+    curl_setopt($unCurl, CURLOPT_CUSTOMREQUEST, $param);
+
+    $trame = http_build_query($data, '', '&');
+
+    curl_setopt($unCurl, CURLOPT_POSTFIELDS, $trame);
+
+    curl_exec($unCurl);
+    $resultStatus = curl_getinfo($unCurl);
+
+    curl_close($unCurl);
+
+    if ($resultStatus['http_code'] == $value) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 ?>

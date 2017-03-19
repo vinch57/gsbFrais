@@ -7,15 +7,31 @@ $action = $_REQUEST['action'];
 
 switch ($action) {
     case 'saisirFrais': {
-            if ($pdo->estPremierFraisMois($idVisiteur, $mois)) {
-                $pdo->creeNouvellesLignesFrais($idVisiteur, $mois);
+            if (getAPI('estpremierfrais/'.$idVisiteur.'/mois/'.$mois)) {
+                //$pdo->creeNouvellesLignesFrais($idVisiteur, $mois);
+                actionAPI(
+                    'fichefrais',
+                    'POST',
+                    array(
+                        'idVisiteur' => $idVisiteur,
+                        'mois' => $mois
+                    )
+                );
             }
             break;
         }
     case 'validerMajFraisForfait': {
             $lesFrais = $_REQUEST['lesFrais'];
             if (lesQteFraisValides($lesFrais)) {
-                $pdo->majFraisForfait($idVisiteur, $mois, $lesFrais);
+                actionAPI(
+                    'majfraisforfait',
+                    'PUT',
+                    array(
+                        'idVisiteur' => $idVisiteur,
+                        'mois' => $mois,
+                        'lesFrais' => $lesFrais
+                    )
+                );
             } else {
                 ajouterErreur("Les valeurs des frais doivent être numériques");
                 include("vues/v_erreurs.php");
@@ -30,18 +46,39 @@ switch ($action) {
             if (nbErreurs() != 0) {
                 include("vues/v_erreurs.php");
             } else {
-                $pdo->creeNouveauFraisHorsForfait($idVisiteur, $mois, $libelle, $dateFrais, $montant);
+                $data = array(
+                    'idVisiteur' => $idVisiteur,
+                    'mois' => $mois,
+                    'date' => $dateFrais,
+                    'libelle' => $libelle,
+                    'montant' => $montant
+                );
+                actionAPI(
+                    'fraishorsforfaits',
+                    'POST',
+                    $data
+                );
             }
             break;
         }
     case 'supprimerFrais': {
             $idFrais = $_REQUEST['idFrais'];
-            $pdo->supprimerFraisHorsForfait($idFrais);
+            actionAPI(
+                'fraishorsforfait',
+                'DELETE',
+                array(
+                    'idFrais' => $idFrais
+                )
+            );
             break;
         }
 }
-$lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idVisiteur, $mois);
-$lesFraisForfait = $pdo->getLesFraisForfait($idVisiteur, $mois);
+
+$lesFraisHorsForfait = getAPI('fraishorsforfaits/'.$idVisiteur.'/mois/'.$mois);
+if($lesFraisHorsForfait == null) {
+    $lesFraisHorsForfait = array();
+}
+$lesFraisForfait = getAPI('fraisforfaits/'.$idVisiteur.'/mois/'.$mois);
 include("vues/v_listeFraisForfait.php");
 include("vues/v_listeFraisHorsForfait.php");
 ?>

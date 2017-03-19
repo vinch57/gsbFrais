@@ -314,8 +314,8 @@ class PdoGsb {
      */
     public function creeNouveauFraisHorsForfait($idVisiteur, $mois, $libelle, $date, $montant) {
         $dateFr = dateFrancaisVersAnglais($date);
-        $requete_prepare = PdoGSB::$monPdo->prepare("INSERT INTO lignefraishorsforfait "
-                . "VALUES ('', :unIdVisiteur,:unMois, :unLibelle, :uneDateFr, :unMontant) ");
+        $requete_prepare = PdoGSB::$monPdo->prepare("INSERT INTO lignefraishorsforfait (idVisiteur, mois, libelle, date, montant) "
+                . "VALUES (:unIdVisiteur,:unMois, :unLibelle, :uneDateFr, :unMontant) ");
         $requete_prepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
         $requete_prepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
         $requete_prepare->bindParam(':unLibelle', $libelle, PDO::PARAM_STR);
