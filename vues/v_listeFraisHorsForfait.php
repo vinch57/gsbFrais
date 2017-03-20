@@ -7,7 +7,8 @@
                 <tr>
                     <th class="date">Date</th>
                     <th class="libelle">Libellé</th>  
-                    <th class="montant">Montant</th>  
+                    <th class="montant">Montant</th>
+                    <th class="montant">Client</th>
                     <th class="action">&nbsp;</th> 
                 </tr>
             </thead>  
@@ -18,11 +19,13 @@
                     $date = $unFraisHorsForfait['date'];
                     $montant = $unFraisHorsForfait['montant'];
                     $id = $unFraisHorsForfait['id'];
+                    $client = ($unFraisHorsForfait['nom_client'] !== null) ? $unFraisHorsForfait['nom_client'].' - '.$unFraisHorsForfait['ville'] : '-';
                     ?>           
                     <tr>
                         <td> <?php echo $date ?></td>
                         <td> <?php echo $libelle ?></td>
                         <td><?php echo $montant ?></td>
+                        <td><?php echo $client ?></td>
                         <td><a href="index.php?uc=gererFrais&action=supprimerFrais&idFrais=<?php echo $id ?>" 
                                onclick="return confirm('Voulez-vous vraiment supprimer ce frais?');">Supprimer ce frais</a></td>
                     </tr>
@@ -52,6 +55,20 @@
                     <input type="text" id="txtMontantHF" name="montant" class="form-control" value="">
                 </div>
             </div>
+            <div class="form-group">
+                <label for="txtMontantHF">Client : </label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    <select name="client" class="form-control">
+                        <option value='0'>Non précisé</option>
+                        <?php
+                        foreach($lesClientsVisiteur as $unClient) {
+                            echo '<option value='.$unClient['id'].'>'.$unClient['nom'].'</option>';
+                        }
+                        ?>
+                    </select>
+                </div>
+            </div> 
             <button class="btn btn-success" type="submit">Ajouter</button>
             <button class="btn btn-danger" type="reset">Effacer</button>
         </form>

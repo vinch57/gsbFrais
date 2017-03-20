@@ -6,7 +6,7 @@
         <strong><u>Montant validé :</u></strong> <?php echo number_format($montantValide,2,',','.') ?>
     </div>
 </div>
-<div class="panel panel-info"">
+<div class="panel panel-info">
     <div class="panel-heading">Eléments forfaitisés</div>
     <table class="table table-bordered table-responsive">
         <tr>
@@ -51,7 +51,8 @@
         <tr>
             <th class="date">Date</th>
             <th class="libelle">Libellé</th>
-            <th class='montant'>Montant</th>                
+            <th class='montant'>Montant</th>           
+            <th class='montant'>Client</th>           
         </tr>
         <?php
         if($lesFraisHorsForfait) {
@@ -59,11 +60,13 @@
                 $date = $unFraisHorsForfait['date'];
                 $libelle = htmlspecialchars($unFraisHorsForfait['libelle']);
                 $montant = $unFraisHorsForfait['montant'];
+                $nom = ($unFraisHorsForfait['nom_client'] != null) ? $unFraisHorsForfait['nom_client'] : '-';
                 ?>
                 <tr>
                     <td><?php echo $date ?></td>
                     <td><?php echo $libelle ?></td>
                     <td><?php echo number_format($montant,2,',','.') ?></td>
+                    <td><?php echo $nom ?></td>
                 </tr>
                 <?php
             }

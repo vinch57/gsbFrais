@@ -26,6 +26,7 @@
                             <li <?php if (isset($_REQUEST['uc']) && $_REQUEST['uc'] == 'etatFrais') { ?> class="active"<?php } ?>><a href="index.php?uc=etatFrais&action=selectionnerMois">Mes fiches de frais</a></li>
                             <li <?php if (isset($_REQUEST['uc']) && $_REQUEST['uc'] == 'statAnnee') { ?> class="active"<?php } ?>><a href="index.php?uc=statAnnee&action=selectionnerAnnee">Statistiques annuelles</a></li>
                             <li <?php if (isset($_REQUEST['uc']) && $_REQUEST['uc'] == 'statGlobal') { ?> class="active"<?php } ?>><a href="index.php?uc=statGlobal&action=voirTotalFrais">Total des frais</a></li>
+                            <li <?php if (isset($_REQUEST['uc']) && $_REQUEST['uc'] == 'statClients') { ?> class="active"<?php } ?>><a href="index.php?uc=statClients&action=tableauClient">Tableau clients</a></li>
                             <li <?php if (isset($_REQUEST['uc']) && $_REQUEST['uc'] == 'deconnexion') { ?> class="active"<?php } ?>><a href="index.php?uc=deconnexion&action=demandeDeconnexion">Déconnexion</a></li>
                         </ul>
                     </div>

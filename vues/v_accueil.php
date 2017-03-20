@@ -15,6 +15,7 @@
                         <a href="index.php?uc=etatFrais&action=selectionnerMois" class="btn btn-primary btn-lg" role="button"><span class="glyphicon glyphicon-list-alt"></span> <br/>Mes fiches de frais</a>
                         <a href="index.php?uc=statAnnee&action=selectionnerAnnee" class="btn btn-danger btn-lg" role="button"><span class="glyphicon glyphicon-stats"></span> <br/>Statistiques annuelles</a>
                         <a href="index.php?uc=statGlobal&action=voirTotalFrais" class="btn btn-warning btn-lg" role="button"><span class="glyphicon glyphicon-folder-close"></span> <br/>Total des frais</a>
+                        <a href="index.php?uc=statClients&action=tableauClient" class="btn btn-info btn-lg" role="button"><span class="glyphicon glyphicon glyphicon-user"></span> <br/>Tableau clients</a>
                     </div>
                 </div>
             </div>

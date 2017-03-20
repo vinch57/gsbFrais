@@ -42,6 +42,10 @@ switch ($uc) {
             include("controleurs/c_totalFrais.php");
             break;
         }
+    case 'statClients': {
+            include("controleurs/c_totalClients.php");
+            break;
+        }
 }
 include("vues/v_pied.php");
 ?>

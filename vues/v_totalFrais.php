@@ -10,17 +10,8 @@
             <th>Montant hors forfait</th>    
             <th>Total des notes de frais</th>
         </tr>
-                <?php 
-                $tab=array();
-                for($i=0;$i<count($lesFraisForfaitTotaux);$i++)
-                {
-                    $tab[$i][0] = $lesFraisForfaitTotaux[$i][0];
-                    $tab[$i][1] = $lesFraisForfaitTotaux[$i][1]. ' €';
-                    $tab[$i][2] = (isset($lesFraisHorsForfaitTotaux[$i][1])) ? $lesFraisHorsForfaitTotaux[$i][1].' €' : '-';
-                    $tab[$i][3] = $tab[$i][1]+$tab[$i][2] .' €';
-                }
-                //var_dump($tab);
-                foreach ($tab as $ligne)
+                <?php
+                foreach ($tabTotal as $ligne)
                 {
                     echo '<tr>';
                     echo '<td>'.$ligne[0].'</td>';

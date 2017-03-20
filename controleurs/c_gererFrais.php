@@ -1,17 +1,19 @@
 <?php
+
 $idVisiteur = $_SESSION['idVisiteur'];
 $mois = getMois(date("d/m/Y"));
 $numAnnee = substr($mois, 0, 4);
 $numMois = substr($mois, 4, 2);
 $action = $_REQUEST['action'];
+$lesClientsVisiteur = getAPI('lesclientsvisiteurs/' . $idVisiteur);
 
 switch ($action) {
     case 'saisirFrais': {
-            if (getAPI('estpremierfrais/'.$idVisiteur.'/mois/'.$mois)) {
+            if (getAPI('estpremierfrais/' . $idVisiteur . '/mois/' . $mois)) {
                 //$pdo->creeNouvellesLignesFrais($idVisiteur, $mois);
                 actionAPI(
-                    'fichefrais',
-                    'POST',
+                    'fichefrais', 
+                    'POST', 
                     array(
                         'idVisiteur' => $idVisiteur,
                         'mois' => $mois
@@ -42,6 +44,7 @@ switch ($action) {
             $dateFrais = $_REQUEST['dateFrais'];
             $libelle = $_REQUEST['libelle'];
             $montant = $_REQUEST['montant'];
+            $client = ($_REQUEST['client'] !== '0') ? $_REQUEST['client'] : null;
             valideInfosFrais($dateFrais, $libelle, $montant);
             if (nbErreurs() != 0) {
                 include("vues/v_erreurs.php");
@@ -51,7 +54,8 @@ switch ($action) {
                     'mois' => $mois,
                     'date' => $dateFrais,
                     'libelle' => $libelle,
-                    'montant' => $montant
+                    'montant' => $montant,
+                    'client' => $client
                 );
                 actionAPI(
                     'fraishorsforfaits',
@@ -74,11 +78,11 @@ switch ($action) {
         }
 }
 
-$lesFraisHorsForfait = getAPI('fraishorsforfaits/'.$idVisiteur.'/mois/'.$mois);
-if($lesFraisHorsForfait == null) {
+$lesFraisHorsForfait = getAPI('fraishorsforfaits/' . $idVisiteur . '/mois/' . $mois);
+if ($lesFraisHorsForfait == null) {
     $lesFraisHorsForfait = array();
 }
-$lesFraisForfait = getAPI('fraisforfaits/'.$idVisiteur.'/mois/'.$mois);
+$lesFraisForfait = getAPI('fraisforfaits/' . $idVisiteur . '/mois/' . $mois);
 include("vues/v_listeFraisForfait.php");
 include("vues/v_listeFraisHorsForfait.php");
 ?>
